@@ -18,6 +18,9 @@ class UserViewModel : ViewModel() {
         RetrofitFactory.createService(APIEndPointsInterface::class.java)
 
 
+    /**
+     * Dispatchers.IO for network or disk operations that takes longer time and runs in background thread
+     */
     fun fetchUsers(pageNo: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val apiResponse = apiEndPointsInterface.getUserList(pageNo)
@@ -25,6 +28,9 @@ class UserViewModel : ViewModel() {
         }
     }
 
+    /**
+     * Dispatchers.Main for UI related stuff which runs on Main thread
+     */
     private suspend fun setUsers(userModel: UserModel) {
         withContext(Dispatchers.Main) {
             mutableUserList.value = userModel

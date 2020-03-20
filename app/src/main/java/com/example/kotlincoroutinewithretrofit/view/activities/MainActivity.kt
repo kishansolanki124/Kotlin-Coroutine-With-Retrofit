@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.kotlincoroutinewithretrofit.R
-import com.example.kotlincoroutinewithretrofit.adapters.AnimalAdapter
+import com.example.kotlincoroutinewithretrofit.adapters.UsersAdapter
 import com.example.kotlincoroutinewithretrofit.models.responsemodels.UserModel
 import com.example.kotlincoroutinewithretrofit.utils.isConnected
 import com.example.kotlincoroutinewithretrofit.utils.setRecyclerViewLayoutManager
@@ -15,12 +15,14 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     private lateinit var userViewModel: UserViewModel
-    private lateinit var animalAdapter: AnimalAdapter
+    private lateinit var usersAdapter: UsersAdapter
     private var usersList: ArrayList<UserModel.Data> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        setupUserRecyclerView()
 
         userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
@@ -28,15 +30,13 @@ class MainActivity : AppCompatActivity() {
             userViewModel.fetchUsers(1)
 
         userViewModel.getUsers().observe(this, Observer { userViewModel ->
-            animalAdapter.addAll(userViewModel.data)
+            usersAdapter.addAll(userViewModel.data)
         })
-
-        setupUserRecyclerView()
     }
 
     private fun setupUserRecyclerView() {
         setRecyclerViewLayoutManager(rvUsers, this)
-        animalAdapter = AnimalAdapter(usersList, this@MainActivity)
-        rvUsers.adapter = animalAdapter
+        usersAdapter = UsersAdapter(usersList, this@MainActivity)
+        rvUsers.adapter = usersAdapter
     }
 }

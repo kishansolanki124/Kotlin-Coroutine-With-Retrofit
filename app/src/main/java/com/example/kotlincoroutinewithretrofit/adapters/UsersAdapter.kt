@@ -13,7 +13,7 @@ import com.example.kotlincoroutinewithretrofit.R
 import com.example.kotlincoroutinewithretrofit.models.responsemodels.UserModel
 import kotlinx.android.synthetic.main.user_item.view.*
 
-class AnimalAdapter(private val items: ArrayList<UserModel.Data>, private val context: Context) :
+class UsersAdapter(private val items: ArrayList<UserModel.Data>, private val context: Context) :
     RecyclerView.Adapter<ViewHolder>() {
 
     override fun getItemCount(): Int {

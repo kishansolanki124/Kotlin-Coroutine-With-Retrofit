@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
     private var visibleThreshold = 5
     private var page = 1
 
-    //private var usersList: ArrayList<DummyUserModel.Data> = ArrayList()
     private var usersList: ArrayList<DummyUserModel.Data?> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +72,6 @@ class MainActivity : AppCompatActivity() {
                 if (!loading
                     && totalItemCount <= lastVisibleItem + visibleThreshold
                 ) {
-                    //End of the items
                     page += 1
                     loading = true
                     recyclerView.post {

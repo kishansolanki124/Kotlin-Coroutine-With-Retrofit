@@ -33,7 +33,7 @@ class UsersAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == viewTypeItem) {
-            ViewHolder(
+            ItemViewHolder(
                 LayoutInflater.from(context).inflate(R.layout.user_item, parent, false)
             )
         } else {
@@ -44,14 +44,14 @@ class UsersAdapter(
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is ViewHolder) {
-            holder.tvUserName.text =
+    override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
+        if (viewHolder is ItemViewHolder) {
+            viewHolder.tvUserName.text =
                 items[position]!!.name
-            holder.tvUserEmail.text = items[position]!!.email
-            holder.tvIndex.text = (position + 1).toString()
-        } else if (holder is ProgressHolder) {
-            holder.pbItem.visibility = View.VISIBLE
+            viewHolder.tvUserEmail.text = items[position]!!.email
+            viewHolder.tvIndex.text = (position + 1).toString()
+        } else if (viewHolder is ProgressHolder) {
+            viewHolder.pbItem.visibility = View.VISIBLE
         }
     }
 
@@ -76,7 +76,7 @@ class UsersAdapter(
     }
 }
 
-class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val tvUserName: AppCompatTextView = view.tvUserName
     val tvUserEmail: AppCompatTextView = view.tvUserEmail
     val tvIndex: AppCompatTextView = view.tvIndx

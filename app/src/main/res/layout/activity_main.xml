@@ -5,10 +5,15 @@
     android:layout_height="match_parent"
     tools:context=".view.activities.MainActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvUsers"
-        tools:listitem="@layout/user_item"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nscMain"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvUsers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/user_item" />
+    </androidx.core.widget.NestedScrollView>
 </androidx.appcompat.widget.LinearLayoutCompat>

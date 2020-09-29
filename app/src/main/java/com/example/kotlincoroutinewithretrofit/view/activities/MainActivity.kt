@@ -2,18 +2,17 @@ package com.example.kotlincoroutinewithretrofit.view.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlincoroutinewithretrofit.R
 import com.example.kotlincoroutinewithretrofit.adapters.UsersAdapter
 import com.example.kotlincoroutinewithretrofit.models.responsemodels.DummyUserModel
 import com.example.kotlincoroutinewithretrofit.utils.isConnected
 import com.example.kotlincoroutinewithretrofit.viewmodels.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -60,27 +59,55 @@ class MainActivity : AppCompatActivity() {
         usersAdapter = UsersAdapter(usersList, this@MainActivity)
         rvUsers.adapter = usersAdapter
 
-        rvUsers.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(
-                recyclerView: RecyclerView,
-                dx: Int, dy: Int
-            ) {
-                super.onScrolled(recyclerView, dx, dy)
-                val totalItemCount = layoutManager.itemCount
-                val lastVisibleItem = layoutManager
-                    .findLastVisibleItemPosition()
-                if (!loading
+        //todo for recyclerview without nested scrollview
+//        rvUsers.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            override fun onScrolled(
+//                recyclerView: RecyclerView,
+//                dx: Int, dy: Int
+//            ) {
+//                super.onScrolled(recyclerView, dx, dy)
+//                val totalItemCount = layoutManager.itemCount
+//                val lastVisibleItem = layoutManager
+//                    .findLastVisibleItemPosition()
+//                if (!loading
+//                    && totalItemCount <= lastVisibleItem + visibleThreshold
+//                ) {
+//                    page += 1
+//                    loading = true
+//                    recyclerView.post {
+//                        usersAdapter.addLoadingFooter()
+//                    }
+//                    println("new page loaded: $page")
+//                    userViewModel.fetchUsersPagination(page)
+//                }
+//            }
+//        })
+
+        //todo for recyclerview inside nested scrollview
+        nscMain.setOnScrollChangeListener { v: NestedScrollView, _: Int, scrollY: Int, _: Int, oldScrollY: Int ->
+            val totalItemCount = layoutManager.itemCount
+            val lastVisibleItem = layoutManager
+                .findLastVisibleItemPosition()
+
+            if (v.getChildAt(v.childCount - 1) != null) {
+                if (scrollY >= v.getChildAt(v.childCount - 1)
+                        .measuredHeight - v.measuredHeight &&
+                    scrollY > oldScrollY
+                    &&
+                    !loading
                     && totalItemCount <= lastVisibleItem + visibleThreshold
                 ) {
+                    //code to fetch more data for endless scrolling
                     page += 1
                     loading = true
-                    recyclerView.post {
+                    v.getChildAt(v.childCount - 1).post {
                         usersAdapter.addLoadingFooter()
                     }
                     println("new page loaded: $page")
                     userViewModel.fetchUsersPagination(page)
+
                 }
             }
-        })
+        }
     }
 }
